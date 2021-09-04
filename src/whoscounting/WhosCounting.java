@@ -20,7 +20,15 @@ public class WhosCounting {
     public static void main(String[] args) {
 
         //Variables del juego
-        int estrategia[][] = llenarEstrategia();
+        int estrategia[][]=null;
+        int opc=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la opción de estrategia.\n1.Manual\n2.Automática"));
+        if (opc==1) {
+            estrategia=estrategiaDelUsuario();
+        }else{
+            estrategia=llenarEstrategia();
+        }
+        
+         
         int numRuleta, posicionUsuario, posicionComputador;
 
         int cantidadesDeJuegos = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad de juegos que desea"));
@@ -52,7 +60,7 @@ public class WhosCounting {
                 //COMPUTADOR
                 posicionComputador = estrategia[numRuleta][i] - 1;
                 while (computadora[posicionComputador] != null) {
-                    posicionComputador++;
+                    posicionComputador=(posicionComputador+1)%5;
                 }
 
                 computadora[posicionComputador] = numRuleta;
@@ -72,8 +80,17 @@ public class WhosCounting {
                 numComputadorStr += i;
             }
             numComputador = Integer.parseInt(numComputadorStr);
+            
+            if (numHumano>numComputador) {
+                JOptionPane.showMessageDialog(null,"Usted: "+numHumanoStr+"\nComputadora: "+numComputadorStr+"\nGanó usted");
+            }
+            else if(numHumano==numComputador){
+                JOptionPane.showMessageDialog(null,"Usted: "+numHumanoStr+"\nComputadora: "+numComputadorStr+"\nEmpate");
+            }
+            else if(numHumano<numComputador){
+                JOptionPane.showMessageDialog(null,"Usted: "+numHumanoStr+"\nComputadora: "+numComputadorStr+"\nGanó computadora");
+            }
 
-           JOptionPane.showMessageDialog(null,"Su resultado: "+numHumano+"\nEl resultado de la máquina: "+numComputador+"\n"+((numHumano > numComputador) ? "Ganó usted" : "Ganó máquina"));
         }
 
     }
@@ -136,7 +153,20 @@ public class WhosCounting {
         estrategia[9][3] = 1;
         estrategia[9][4] = 1;
         return estrategia;
-
+    }
+    
+    
+    public static int[][] estrategiaDelUsuario(){
+        int estrategia[][] = new int[10][5];
+        for (int i = 0; i < estrategia.length; i++) {
+            String posicion=JOptionPane.showInputDialog(null,"Ingrese las posiciones del número "+i);
+            String posiciones[]=posicion.split(" ");
+            for (int j = 0; j < posiciones.length; j++) 
+            {
+                estrategia[i][j]=Integer.parseInt(posiciones[j]);
+            }
+        }
+        return estrategia;
     }
 
 }
